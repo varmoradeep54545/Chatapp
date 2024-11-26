@@ -21,7 +21,7 @@ function Login() {
     };
     // console.log(userInfo);
     axios
-      .post("http://localhost:3001/api/user/login", userInfo)
+      .post("https://chatapp9.vercel.app/api/user/login", userInfo)
       .then((response) => {
         if (response.data) {
           toast.success("Login successful");
