@@ -11,7 +11,7 @@ const useGetMessage = () => {
       if (selectedConversation && selectedConversation._id) {
         try {
           const res = await axios.get(
-            `http://localhost:3001/api/message/get/${selectedConversation._id}`
+            `https://chatapp9.vercel.app/api/message/get/${selectedConversation._id}`
           );
           setMessage(res.data);
           setLoading(false);
