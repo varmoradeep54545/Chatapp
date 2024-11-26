@@ -9,7 +9,7 @@ function useGetAllUsers() {
       setLoading(true);
       try {
         const token = Cookies.get("jwt");
-        const response = await axios.get("http://localhost:3001/api/user/allusers", {
+        const response = await axios.get("https://chatapp9.vercel.app/api/user/allusers", {
           credentials: "include",
           headers: {
             Authorization: `Bearer ${token}`,
