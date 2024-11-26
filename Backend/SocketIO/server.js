@@ -6,19 +6,10 @@ const cors = require('cors');
 const app = express();
 
 const server = http.createServer(app);
-const allowedOrigins = ["https://chatapp-client-rouge.vercel.app"];
-
 const io = new Server(server, {
   cors: {
-    origin: (origin, callback) => {
-      if (allowedOrigins.includes(origin) || !origin) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: "https://chatapp-client-rouge.vercel.app",
     methods: ["GET", "POST"],
-    credentials: true,
   },
 });
 
