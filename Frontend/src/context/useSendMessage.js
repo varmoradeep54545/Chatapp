@@ -8,7 +8,7 @@ const useSendMessage = () => {
     setLoading(true);
     try {
       const res = await axios.post(
-        `http://localhost:3001/api/message/send/${selectedConversation._id}`,
+        `https://chatapp9.vercel.app/api/message/send/${selectedConversation._id}`,
         { message }
       );
       setMessage([...messages, res.data]);
