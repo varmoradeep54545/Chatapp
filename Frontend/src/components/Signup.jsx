@@ -30,7 +30,7 @@ function Signup() {
     };
     // console.log(userInfo);
     await axios
-      .post("http://localhost:3001/api/user/signup", userInfo)
+      .post("https://chatapp9.vercel.app/api/user/signup", userInfo)
       .then((response) => {
         if (response.data) {
           toast.success("Signup successful");
