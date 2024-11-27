@@ -61,12 +61,17 @@ app.use(cors());
 const PORT = process.env.PORT || 3001;
 const URI = process.env.MONGODB_URI;
 
-try {
-  mongoose.connect(URI);
-  console.log("Connected to MongoDB");
-} catch (error) {
-  console.log("Error connecting to MongoDB:", error);
-}
+const connectToMongoDB = async () => {
+  try {
+    await mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+    process.exit(1); // Exit the process if the connection fails
+  }
+};
+
+connectToMongoDB();
 
 // Routes
 app.use("/api/user", userRoute);
