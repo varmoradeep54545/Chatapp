@@ -9,6 +9,7 @@ export default defineConfig({
       "/api": {
         target: "https://chatapp9.vercel.app/api",
         changeOrigin: true,
+          ws: true, 
       },
     },
   },
