@@ -15,13 +15,25 @@ const app = express();
 const server = http.createServer(app);
 
 // Socket.IO configuration
+const allowedOrigins = [
+  "https://chatapp-client-rouge.vercel.app"
+
+];
+
 const io = new Server(server, {
   cors: {
-    origin: "https://chatapp-client-rouge.vercel.app",
+    origin: (origin, callback) => {
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true); // Allow the request
+      } else {
+        callback(new Error("Not allowed by CORS")); // Reject the request
+      }
+    },
     methods: ["GET", "POST"],
     credentials: true,
   },
 });
+
 
 // Real-time message handling
 const users = {};
