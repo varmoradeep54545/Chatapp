@@ -3,32 +3,71 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { Server } from "socket.io";
+import http from "http";
 
 import userRoute from "./routes/user.route.js";
 import messageRoute from "./routes/message.route.js";
-import { app, server } from "./SocketIO/server.js";
 
 dotenv.config();
 
-// middleware
+const app = express();
+const server = http.createServer(app);
+
+// Socket.IO configuration
+const io = new Server(server, {
+  cors: {
+    origin: "https://chatapp-client-rouge.vercel.app",
+    methods: ["GET", "POST"],
+  },
+});
+
+// Real-time message handling
+const users = {};
+
+const getReceiverSocketId = (receiverId) => {
+  return users[receiverId];
+};
+
+io.on("connection", (socket) => {
+  console.log("A user connected:", socket.id);
+
+  const userId = socket.handshake.query.userId;
+  if (userId) {
+    users[userId] = socket.id;
+    console.log("Online users:", users);
+  }
+
+  io.emit("getOnlineUsers", Object.keys(users));
+
+  socket.on("disconnect", () => {
+    console.log("A user disconnected:", socket.id);
+    delete users[userId];
+    io.emit("getOnlineUsers", Object.keys(users));
+  });
+});
+
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({server}));
+app.use(cors());
 
+// MongoDB connection
 const PORT = process.env.PORT || 3001;
 const URI = process.env.MONGODB_URI;
 
 try {
-    mongoose.connect(URI);
-    console.log("Connected to MongoDB");
+  mongoose.connect(URI);
+  console.log("Connected to MongoDB");
 } catch (error) {
-    console.log(error);
+  console.log("Error connecting to MongoDB:", error);
 }
 
-//routes
+// Routes
 app.use("/api/user", userRoute);
 app.use("/api/message", messageRoute);
 
+// Start server
 server.listen(PORT, () => {
-    console.log(`Server is Running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
