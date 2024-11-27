@@ -19,6 +19,7 @@ const io = new Server(server, {
   cors: {
     origin: "https://chatapp-client-rouge.vercel.app",
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 
