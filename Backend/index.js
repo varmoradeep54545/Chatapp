@@ -17,7 +17,6 @@ const server = http.createServer(app);
 // Socket.IO configuration
 const allowedOrigins = [
   "https://chatapp-client-rouge.vercel.app"
-
 ];
 
 const io = new Server(server, {
